@@ -29,6 +29,12 @@ class JSON
             $args[] = true;
         }
 
+        // fix for issue when elasticsearch substitutes large integers for
+        // missing values in sorts (json_decode(): integer overflow detected)
+        // see https://github.com/remicollet/pecl-json-c/issues/13
+        $args[] = 512;
+        $args[] = JSON_BIGINT_AS_STRING;
+
         // run decode
         $array = call_user_func_array('json_decode', $args);
 
